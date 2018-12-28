@@ -1,0 +1,23 @@
+{
+    "name": "aliyunmq/mq-php-sdk",
+    "type": "library",
+    "description": "Aliyun Message Queue(MQ) PHP SDK, PHP>=5.5.0",
+    "keywords": ["Aliyun","Alicloud", "MQ", "Message Queue", "Message", "Queue"],
+    "homepage": "https://github.com/aliyunmq/mq-php-sdk",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.5.0",
+        "guzzlehttp/guzzle": ">=6.0.0"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    },
+    "autoload":{
+        "psr-4": {
+            "MQ\\": "MQ/"
+        }
+    }
+}
