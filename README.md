@@ -27,8 +27,6 @@ composer install
 
 ## Samples
 
-You must fulfill the AccessId/AccessKey/Endpoint in the example before running.   
-
 ### Publish Message
 ```php
 <?php
