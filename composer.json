@@ -1,9 +1,9 @@
 {
-    "name": "aliyunmq/mq-php-sdk",
+    "name": "aliyunmq/mq-http-php-sdk",
     "type": "library",
-    "description": "Aliyun Message Queue(MQ) PHP SDK, PHP>=5.5.0",
+    "description": "Aliyun Message Queue(MQ) Http PHP SDK, PHP>=5.5.0",
     "keywords": ["Aliyun","Alicloud", "MQ", "Message Queue", "Message", "Queue"],
-    "homepage": "https://github.com/aliyunmq/mq-php-sdk",
+    "homepage": "https://github.com/aliyunmq/mq-http-php-sdk",
     "license": "MIT",
     "require": {
         "php": ">=5.5.0",
