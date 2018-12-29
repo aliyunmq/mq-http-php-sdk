@@ -116,7 +116,7 @@ class HttpClient
                 return $this->client->sendAsync($request, $parameters)->then(
                     function ($res) use (&$response, $callback) {
                         try {
-                            $response->setRequestId($res->getHeader("x-mq-request-id"));
+                            $response->setRequestId($res->getHeaderLine("x-mq-request-id"));
                             $callback->onSucceed($response->parseResponse($res->getStatusCode(), $res->getBody()));
                         } catch (MQException $e) {
                             $callback->onFailed($e);
