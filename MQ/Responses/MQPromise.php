@@ -37,6 +37,7 @@ class MQPromise
             $res = $this->promise->wait();
             if ($res instanceof ResponseInterface)
             {
+                $this->response->setRequestId($res->getHeader("x-mq-request-id"));
                 return $this->response->parseResponse($res->getStatusCode(), $res->getBody());
             }
         } catch (TransferException $e) {

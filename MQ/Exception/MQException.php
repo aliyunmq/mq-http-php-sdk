@@ -60,6 +60,11 @@ class MQException extends \RuntimeException
     {
         return $this->hostId;
     }
+
+    public function setRequestId($requestId)
+    {
+        $this->requestId = $requestId;
+    }
 }
 
 ?>

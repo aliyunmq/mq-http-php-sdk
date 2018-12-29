@@ -61,6 +61,7 @@ class AckMessageResponse extends BaseResponse
     private function parseAckMessageErrorResponse($xmlReader)
     {
         $ex = new AckMessageException($this->statusCode, "AckMessage Failed For Some ReceiptHandles");
+        $ex->setRequestId($this->getRequestId());
         while ($xmlReader->read())
         {
             if ($xmlReader->nodeType == \XMLReader::ELEMENT && $xmlReader->name == Constants::ERROR) {

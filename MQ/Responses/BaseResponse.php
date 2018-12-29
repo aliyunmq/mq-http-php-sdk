@@ -7,6 +7,8 @@ abstract class BaseResponse
 {
     protected $succeed;
     protected $statusCode;
+    // from header
+    protected $requestId;
 
     abstract public function parseResponse($statusCode, $content);
 
@@ -20,6 +22,16 @@ abstract class BaseResponse
     public function getStatusCode()
     {
         return $this->statusCode;
+    }
+
+    public function setRequestId($requestId)
+    {
+        $this->requestId = $requestId;
+    }
+
+    public function getRequestId()
+    {
+        return $this->requestId;
     }
 
     protected function loadXmlContent($content)
