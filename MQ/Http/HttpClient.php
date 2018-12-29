@@ -25,7 +25,6 @@ class HttpClient
     public function __construct($endPoint, $accessId,
         $accessKey, $securityToken = NULL, Config $config = NULL)
     {
-        print $endPoint;
         if ($config == NULL)
         {
             $config = new Config;
