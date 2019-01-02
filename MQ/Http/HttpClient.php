@@ -22,6 +22,8 @@ class HttpClient
     private $requestTimeout;
     private $connectTimeout;
 
+    private $agent;
+
     public function __construct($endPoint, $accessId,
         $accessKey, $securityToken = NULL, Config $config = NULL)
     {
@@ -45,6 +47,7 @@ class HttpClient
         $this->connectTimeout = $config->getConnectTimeout();
         $this->securityToken = $securityToken;
         $this->endpoint = $endPoint;
+        $this->agent = "mq-php-sdk/1.0.0(GuzzleHttp/" . \GuzzleHttp\Client::VERSION . ";" . PHP_VERSION . ")";
     }
 
     private function addRequiredHeaders(BaseRequest &$request)
@@ -55,6 +58,7 @@ class HttpClient
         $request->setBody($body);
         $request->setQueryString($queryString);
 
+        $request->setHeader(Constants::USER_AGENT, $this->agent);
         if ($body != NULL)
         {
             $request->setHeader(Constants::CONTENT_LENGTH, strlen($body));

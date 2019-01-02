@@ -16,6 +16,7 @@ class Constants
     const CONTENT_LENGTH = "Content-Length";
     const CONTENT_TYPE = "Content-Type";
     const SECURITY_TOKEN = "security-token";
+    const USER_AGENT = "User-Agent";
 
     // XML Tag
     const ERROR = "Error";
