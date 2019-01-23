@@ -25,6 +25,8 @@ Use Composer to install requires
 composer install
 ``` 
 
+*Note: php version>=5.5.0, and xml extension of php is required.*
+
 ## Samples
 
 [Publish Message](https://github.com/aliyunmq/mq-http-samples/blob/master/php/Producer.php)
