@@ -10,7 +10,7 @@ class PublishMessageRequest extends BaseRequest
 
     private $topicName;
 
-    public function __construct($instanceId, $topicName, $messageBody, $messageTag = NULL)
+    public function __construct($instanceId, $topicName, $messageBody, $messageTag = null)
     {
         parent::__construct($instanceId, 'post', 'topics/' . $topicName . '/messages');
 
@@ -29,7 +29,7 @@ class PublishMessageRequest extends BaseRequest
         $xmlWriter = new \XMLWriter;
         $xmlWriter->openMemory();
         $xmlWriter->startDocument("1.0", "UTF-8");
-        $xmlWriter->startElementNS(NULL, "Message", Constants::XML_NAMESPACE);
+        $xmlWriter->startElementNS(null, "Message", Constants::XML_NAMESPACE);
         $this->writeMessagePropertiesForPublishXML($xmlWriter);
         $xmlWriter->endElement();
         $xmlWriter->endDocument();
@@ -41,7 +41,6 @@ class PublishMessageRequest extends BaseRequest
         if ($this->instanceId != null && $this->instanceId != "") {
             return http_build_query(array("ns" => $this->instanceId));
         }
-        return NULL;
+        return null;
     }
 }
-?>

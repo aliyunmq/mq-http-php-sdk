@@ -1,8 +1,8 @@
 <?php
+
 namespace MQ\Traits;
 
 use MQ\Model\Message;
-use MQ\Traits\MessagePropertiesForPeek;
 
 trait MessagePropertiesForConsume
 {
@@ -75,5 +75,3 @@ trait MessagePropertiesForConsume
         $this->consumedTimes = $message->getConsumedTimes();
     }
 }
-
-?>

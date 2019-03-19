@@ -43,5 +43,3 @@ class Constants
 
     const TOPIC_NOT_EXIST = "TopicNotExist";
 }
-
-?>

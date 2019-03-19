@@ -2,7 +2,6 @@
 
 namespace MQ\Model;
 
-
 use MQ\Traits\MessagePropertiesForPublish;
 
 class TopicMessage

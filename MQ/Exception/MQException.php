@@ -7,18 +7,14 @@ class MQException extends \RuntimeException
     private $requestId;
     private $hostId;
 
-    public function __construct($code, $message, $previousException = NULL, $onsErrorCode = NULL, $requestId = NULL, $hostId = NULL)
+    public function __construct($code, $message, $previousException = null, $onsErrorCode = null, $requestId = null, $hostId = null)
     {
         parent::__construct($message, $code, $previousException);
 
-        if ($onsErrorCode == NULL)
-        {
-            if ($code >= 500)
-            {
+        if ($onsErrorCode == null) {
+            if ($code >= 500) {
                 $onsErrorCode = "ServerError";
-            }
-            else
-            {
+            } else {
                 $onsErrorCode = "ClientError";
             }
         }
@@ -31,16 +27,13 @@ class MQException extends \RuntimeException
     public function __toString()
     {
         $str = "Code: " . $this->getCode() . " Message: " . $this->getMessage();
-        if ($this->onsErrorCode != NULL)
-        {
+        if ($this->onsErrorCode != null) {
             $str .= " ErrorCode: " . $this->onsErrorCode;
         }
-        if ($this->requestId != NULL)
-        {
+        if ($this->requestId != null) {
             $str .= " RequestId: " . $this->requestId;
         }
-        if ($this->hostId != NULL)
-        {
+        if ($this->hostId != null) {
             $str .= " HostId: " . $this->hostId;
         }
         return $str;
@@ -66,5 +59,3 @@ class MQException extends \RuntimeException
         $this->requestId = $requestId;
     }
 }
-
-?>

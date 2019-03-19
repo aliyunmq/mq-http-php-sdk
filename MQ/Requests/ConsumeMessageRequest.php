@@ -9,7 +9,7 @@ class ConsumeMessageRequest extends BaseRequest
     private $numOfMessages;
     private $waitSeconds;
 
-    public function __construct($instanceId, $topicName, $consumer, $numOfMessages, $messageTag = NULL, $waitSeconds = NULL)
+    public function __construct($instanceId, $topicName, $consumer, $numOfMessages, $messageTag = null, $waitSeconds = null)
     {
         parent::__construct($instanceId, 'get', 'topics/' . $topicName . '/messages');
 
@@ -63,7 +63,7 @@ class ConsumeMessageRequest extends BaseRequest
 
     public function generateBody()
     {
-        return NULL;
+        return null;
     }
 
     public function generateQueryString()
@@ -73,14 +73,12 @@ class ConsumeMessageRequest extends BaseRequest
         if ($this->instanceId != null && $this->instanceId != "") {
             $params["ns"] = $this->instanceId;
         }
-        if ($this->waitSeconds != NULL)
-        {
+        if ($this->waitSeconds != null) {
             $params["waitseconds"] = $this->waitSeconds;
         }
-        if ($this->messageTag != NULL) {
+        if ($this->messageTag != null) {
             $params["tag"] = $this->messageTag;
         }
         return http_build_query($params);
     }
 }
-?>

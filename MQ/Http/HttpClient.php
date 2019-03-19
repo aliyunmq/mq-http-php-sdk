@@ -1,4 +1,5 @@
 <?php
+
 namespace MQ\Http;
 
 use GuzzleHttp\Exception\TransferException;
@@ -24,11 +25,14 @@ class HttpClient
 
     private $agent;
 
-    public function __construct($endPoint, $accessId,
-        $accessKey, $securityToken = NULL, Config $config = NULL)
-    {
-        if ($config == NULL)
-        {
+    public function __construct(
+        $endPoint,
+        $accessId,
+        $accessKey,
+        $securityToken = null,
+        Config $config = null
+    ) {
+        if ($config == null) {
             $config = new Config;
         }
         $this->accessId = $accessId;
@@ -59,29 +63,27 @@ class HttpClient
         $request->setQueryString($queryString);
 
         $request->setHeader(Constants::USER_AGENT, $this->agent);
-        if ($body != NULL)
-        {
+        if ($body != null) {
             $request->setHeader(Constants::CONTENT_LENGTH, strlen($body));
         }
         $request->setHeader('Date', gmdate(Constants::GMT_DATE_FORMAT));
-        if (!$request->isHeaderSet(Constants::CONTENT_TYPE))
-        {
+        if (!$request->isHeaderSet(Constants::CONTENT_TYPE)) {
             $request->setHeader(Constants::CONTENT_TYPE, 'text/xml');
         }
         $request->setHeader(Constants::VERSION_HEADER, Constants::VERSION_VALUE);
 
-        if ($this->securityToken != NULL)
-        {
+        if ($this->securityToken != null) {
             $request->setHeader(Constants::SECURITY_TOKEN, $this->securityToken);
         }
 
-        $sign = Signature::SignRequest($this->accessKey, $request);
-        $request->setHeader(Constants::AUTHORIZATION,
-            Constants::AUTH_PREFIX . " " . $this->accessId . ":" . $sign);
+        $sign = Signature::signRequest($this->accessKey, $request);
+        $request->setHeader(
+            Constants::AUTHORIZATION,
+            Constants::AUTH_PREFIX . " " . $this->accessId . ":" . $sign
+        );
     }
 
-    public function sendRequestAsync(BaseRequest $request,
-        BaseResponse &$response, AsyncCallback $callback = NULL)
+    public function sendRequestAsync(BaseRequest $request, BaseResponse &$response, AsyncCallback $callback = null)
     {
         $promise = $this->sendRequestAsyncInternal($request, $response, $callback);
         return new MQPromise($promise, $response);
@@ -93,29 +95,33 @@ class HttpClient
         return $promise->wait();
     }
 
-    private function sendRequestAsyncInternal(BaseRequest &$request, BaseResponse &$response, AsyncCallback $callback = NULL)
-    {
+    private function sendRequestAsyncInternal(
+        BaseRequest &$request,
+        BaseResponse &$response,
+        AsyncCallback $callback = null
+    ) {
         $this->addRequiredHeaders($request);
 
         $parameters = array('exceptions' => false, 'http_errors' => false);
         $queryString = $request->getQueryString();
         $body = $request->getBody();
-        if ($queryString != NULL) {
+        if ($queryString != null) {
             $parameters['query'] = $queryString;
         }
-        if ($body != NULL) {
+        if ($body != null) {
             $parameters['body'] = $body;
         }
 
         $parameters['timeout'] = $this->requestTimeout;
         $parameters['connect_timeout'] = $this->connectTimeout;
 
-        $request = new Request(strtoupper($request->getMethod()),
-            $request->getResourcePath(), $request->getHeaders());
-        try
-        {
-            if ($callback != NULL)
-            {
+        $request = new Request(
+            strtoupper($request->getMethod()),
+            $request->getResourcePath(),
+            $request->getHeaders()
+        );
+        try {
+            if ($callback != null) {
                 return $this->client->sendAsync($request, $parameters)->then(
                     function ($res) use (&$response, $callback) {
                         try {
@@ -126,14 +132,10 @@ class HttpClient
                         }
                     }
                 );
-            }
-            else
-            {
+            } else {
                 return $this->client->sendAsync($request, $parameters);
             }
-        }
-        catch (TransferException $e)
-        {
+        } catch (TransferException $e) {
             $message = $e->getMessage();
             if ($e->hasResponse()) {
                 $message = $e->getResponse()->getBody();
@@ -142,5 +144,3 @@ class HttpClient
         }
     }
 }
-
-?>

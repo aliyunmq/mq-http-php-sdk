@@ -20,7 +20,7 @@ class PublishMessageResponse extends BaseResponse
     {
         $this->statusCode = $statusCode;
         if ($statusCode == 201) {
-            $this->succeed = TRUE;
+            $this->succeed = true;
         } else {
             $this->parseErrorResponse($statusCode, $content);
         }
@@ -33,42 +33,38 @@ class PublishMessageResponse extends BaseResponse
         } catch (\Throwable $t) {
             throw new MQException($statusCode, $t->getMessage());
         }
-
     }
 
     public function readMessageIdAndMD5XML(\XMLReader $xmlReader)
     {
-        $message = Message::fromXML($xmlReader, TRUE);
-        $topicMessage = new TopicMessage(NULL);
+        $message = Message::fromXML($xmlReader);
+        $topicMessage = new TopicMessage(null);
         $topicMessage->setMessageId($message->getMessageId());
         $topicMessage->setMessageBodyMD5($message->getMessageBodyMD5());
 
         return $topicMessage;
     }
 
-    public function parseErrorResponse($statusCode, $content, MQException $exception = NULL)
+    public function parseErrorResponse($statusCode, $content, MQException $exception = null)
     {
-        $this->succeed = FALSE;
+        $this->succeed = false;
         $xmlReader = $this->loadXmlContent($content);
         try {
             $result = XMLParser::parseNormalError($xmlReader);
-            if ($result['Code'] == Constants::TOPIC_NOT_EXIST)
-            {
+            if ($result['Code'] == Constants::TOPIC_NOT_EXIST) {
                 throw new TopicNotExistException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
             }
-            if ($result['Code'] == Constants::INVALID_ARGUMENT)
-            {
+            if ($result['Code'] == Constants::INVALID_ARGUMENT) {
                 throw new InvalidArgumentException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
             }
-            if ($result['Code'] == Constants::MALFORMED_XML)
-            {
+            if ($result['Code'] == Constants::MALFORMED_XML) {
                 throw new MalformedXMLException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
             }
             throw new MQException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
         } catch (\Exception $e) {
-            if ($exception != NULL) {
+            if ($exception != null) {
                 throw $exception;
-            } elseif($e instanceof MQException) {
+            } elseif ($e instanceof MQException) {
                 throw $e;
             } else {
                 throw new MQException($statusCode, $e->getMessage());
@@ -78,5 +74,3 @@ class PublishMessageResponse extends BaseResponse
         }
     }
 }
-
-?>

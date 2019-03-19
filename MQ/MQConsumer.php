@@ -1,8 +1,12 @@
 <?php
+
 namespace MQ;
 
+use MQ\Exception\AckMessageException;
 use MQ\Exception\InvalidArgumentException;
+use MQ\Exception\MessageNotExistException;
 use MQ\Exception\MQException;
+use MQ\Exception\ReceiptHandleErrorException;
 use MQ\Exception\TopicNotExistException;
 use MQ\Http\HttpClient;
 use MQ\Model\Message;
@@ -20,7 +24,7 @@ class MQConsumer
     private $client;
 
 
-    function __construct(HttpClient $client, $instanceId = NULL, $topicName, $consumer, $messageTag = NULL)
+    public function __construct(HttpClient $client, $instanceId, $topicName, $consumer, $messageTag = null)
     {
         if (empty($topicName)) {
             throw new InvalidArgumentException(400, "TopicName is null");
@@ -36,7 +40,8 @@ class MQConsumer
         $this->client = $client;
     }
 
-    public function getInstanceId() {
+    public function getInstanceId()
+    {
         return $this->instanceId;
     }
 
@@ -59,10 +64,10 @@ class MQConsumer
     /**
      * consume message
      *
-     * @param $numOfMessages: consume how many messages once, 1~16
-     * @param $waitSeconds: if > 0, means the time(second) the request holden at server if there is no message to consume.
-     *                      If <= 0, means the server will response back if there is no message to consume.
-     *                      It's value should be 1~30
+     * @param int $numOfMessages consume how many messages once, 1~16
+     * @param int $waitSeconds   if > 0, means the time(second) the request holden at server if there is no message to
+     *                           consume. If <= 0, means the server will response back if there is no message to
+     *                           consume. It's value should be 1~30
      *
      * @return Message
      *
@@ -79,7 +84,14 @@ class MQConsumer
         if ($waitSeconds > 30) {
             throw new InvalidArgumentException(400, "numOfMessages should less then 30");
         }
-        $request = new ConsumeMessageRequest($this->instanceId, $this->topicName, $this->consumer, $numOfMessages, $this->messageTag, $waitSeconds);
+        $request = new ConsumeMessageRequest(
+            $this->instanceId,
+            $this->topicName,
+            $this->consumer,
+            $numOfMessages,
+            $this->messageTag,
+            $waitSeconds
+        );
         $response = new ConsumeMessageResponse();
         return $this->client->sendRequest($request, $response);
     }
@@ -87,8 +99,7 @@ class MQConsumer
     /**
      * ack message
      *
-     * @param $receiptHandles:
-     *            array of $receiptHandle, which is got from consumeMessage
+     * @param array $receiptHandles array of $receiptHandle, which is got from consumeMessage
      *
      * @return AckMessageResponse
      *
@@ -105,5 +116,3 @@ class MQConsumer
         return $this->client->sendRequest($request, $response);
     }
 }
-
-?>

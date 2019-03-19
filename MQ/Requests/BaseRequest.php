@@ -11,7 +11,8 @@ abstract class BaseRequest
     protected $queryString;
     protected $instanceId;
 
-    public function __construct($instanceId, $method, $resourcePath) {
+    public function __construct($instanceId, $method, $resourcePath)
+    {
         $this->instanceId = $instanceId;
         $this->method = $method;
         $this->resourcePath = $resourcePath;
@@ -52,8 +53,7 @@ abstract class BaseRequest
 
     public function removeHeader($header)
     {
-        if (isset($this->headers[$header]))
-        {
+        if (isset($this->headers[$header])) {
             unset($this->headers[$header]);
         }
     }
@@ -73,5 +73,3 @@ abstract class BaseRequest
         return $this->method;
     }
 }
-
-?>
