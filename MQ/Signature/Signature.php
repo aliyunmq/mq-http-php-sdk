@@ -7,7 +7,9 @@ use MQ\Requests\BaseRequest;
 
 class Signature
 {
-    public static function signRequest($accessKey, BaseRequest &$request)
+    // method name should begin with lowercase in PSR2, in order to avoid breaking change so ignore this line
+    // @codingStandardsIgnoreLine
+    public static function SignRequest($accessKey, BaseRequest &$request)
     {
         $headers = $request->getHeaders();
         $contentMd5 = "";

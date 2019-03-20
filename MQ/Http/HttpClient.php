@@ -76,7 +76,7 @@ class HttpClient
             $request->setHeader(Constants::SECURITY_TOKEN, $this->securityToken);
         }
 
-        $sign = Signature::signRequest($this->accessKey, $request);
+        $sign = Signature::SignRequest($this->accessKey, $request);
         $request->setHeader(
             Constants::AUTHORIZATION,
             Constants::AUTH_PREFIX . " " . $this->accessId . ":" . $sign
