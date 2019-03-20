@@ -12,7 +12,7 @@ abstract class BaseResponse
 
     abstract public function parseResponse($statusCode, $content);
 
-    abstract public function parseErrorResponse($statusCode, $content, MQException $exception = NULL);
+    abstract public function parseErrorResponse($statusCode, $content, MQException $exception = null);
 
     public function isSucceed()
     {
@@ -38,11 +38,12 @@ abstract class BaseResponse
     {
         $xmlReader = new \XMLReader();
         $isXml = $xmlReader->XML($content);
-        if ($isXml === FALSE) {
+        if ($isXml === false) {
             throw new MQException($this->statusCode, $content);
         }
         try {
-            while ($xmlReader->read()) {}
+            while ($xmlReader->read()) {
+            }
         } catch (\Exception $e) {
             throw new MQException($this->statusCode, $content);
         }
@@ -50,5 +51,3 @@ abstract class BaseResponse
         return $xmlReader;
     }
 }
-
-?>

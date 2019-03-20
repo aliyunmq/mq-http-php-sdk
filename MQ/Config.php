@@ -10,7 +10,7 @@ class Config
 
     public function __construct()
     {
-        $this->proxy = NULL;
+        $this->proxy = null;
         $this->requestTimeout = 35; // 35 seconds
         $this->connectTimeout = 3;  // 3 seconds
         $this->expectContinue = false;
@@ -57,5 +57,3 @@ class Config
         $this->expectContinue = $expectContinue;
     }
 }
-
-?>

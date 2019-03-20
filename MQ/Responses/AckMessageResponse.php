@@ -1,4 +1,5 @@
 <?php
+
 namespace MQ\Responses;
 
 use MQ\Common\XMLParser;
@@ -20,35 +21,34 @@ class AckMessageResponse extends BaseResponse
     {
         $this->statusCode = $statusCode;
         if ($statusCode == 204) {
-            $this->succeed = TRUE;
+            $this->succeed = true;
         } else {
             $this->parseErrorResponse($statusCode, $content);
         }
     }
 
-    public function parseErrorResponse($statusCode, $content, MQException $exception = NULL)
+    public function parseErrorResponse($statusCode, $content, MQException $exception = null)
     {
-        $this->succeed = FALSE;
+        $this->succeed = false;
         $xmlReader = $this->loadXmlContent($content);
 
         try {
-            while ($xmlReader->read())
-            {
+            while ($xmlReader->read()) {
                 if ($xmlReader->nodeType == \XMLReader::ELEMENT) {
                     switch ($xmlReader->name) {
-                    case Constants::ERROR:
-                        $this->parseNormalErrorResponse($xmlReader);
-                        break;
-                    default: // case Constants::Messages
-                        $this->parseAckMessageErrorResponse($xmlReader);
-                        break;
+                        case Constants::ERROR:
+                            $this->parseNormalErrorResponse($xmlReader);
+                            break;
+                        default: // case Constants::Messages
+                            $this->parseAckMessageErrorResponse($xmlReader);
+                            break;
                     }
                 }
             }
         } catch (\Exception $e) {
-            if ($exception != NULL) {
+            if ($exception != null) {
                 throw $exception;
-            } elseif($e instanceof MQException) {
+            } elseif ($e instanceof MQException) {
                 throw $e;
             } else {
                 throw new MQException($statusCode, $e->getMessage());
@@ -58,12 +58,11 @@ class AckMessageResponse extends BaseResponse
         }
     }
 
-    private function parseAckMessageErrorResponse($xmlReader)
+    private function parseAckMessageErrorResponse(\XMLReader $xmlReader)
     {
         $ex = new AckMessageException($this->statusCode, "AckMessage Failed For Some ReceiptHandles");
         $ex->setRequestId($this->getRequestId());
-        while ($xmlReader->read())
-        {
+        while ($xmlReader->read()) {
             if ($xmlReader->nodeType == \XMLReader::ELEMENT && $xmlReader->name == Constants::ERROR) {
                 $ex->addAckMessageErrorItem(AckMessageErrorItem::fromXML($xmlReader));
             }
@@ -75,21 +74,44 @@ class AckMessageResponse extends BaseResponse
     {
         $result = XMLParser::parseNormalError($xmlReader);
 
-        if ($result['Code'] == Constants::INVALID_ARGUMENT)
-        {
-            throw new InvalidArgumentException($this->getStatusCode(), $result['Message'], NULL, $result['Code'], $result['RequestId'], $result['HostId']);
+        if ($result['Code'] === Constants::INVALID_ARGUMENT) {
+            throw new InvalidArgumentException(
+                $this->getStatusCode(),
+                $result['Message'],
+                null,
+                $result['Code'],
+                $result['RequestId'],
+                $result['HostId']
+            );
         }
-        if ($result['Code'] == Constants::TOPIC_NOT_EXIST)
-        {
-            throw new TopicNotExistException($this->getStatusCode(), $result['Message'], NULL, $result['Code'], $result['RequestId'], $result['HostId']);
+        if ($result['Code'] === Constants::TOPIC_NOT_EXIST) {
+            throw new TopicNotExistException(
+                $this->getStatusCode(),
+                $result['Message'],
+                null,
+                $result['Code'],
+                $result['RequestId'],
+                $result['HostId']
+            );
         }
-        if ($result['Code'] == Constants::RECEIPT_HANDLE_ERROR)
-        {
-            throw new ReceiptHandleErrorException($this->getStatusCode(), $result['Message'], NULL, $result['Code'], $result['RequestId'], $result['HostId']);
+        if ($result['Code'] === Constants::RECEIPT_HANDLE_ERROR) {
+            throw new ReceiptHandleErrorException(
+                $this->getStatusCode(),
+                $result['Message'],
+                null,
+                $result['Code'],
+                $result['RequestId'],
+                $result['HostId']
+            );
         }
 
-        throw new MQException($this->getStatusCode(), $result['Message'], NULL, $result['Code'], $result['RequestId'], $result['HostId']);
+        throw new MQException(
+            $this->getStatusCode(),
+            $result['Message'],
+            null,
+            $result['Code'],
+            $result['RequestId'],
+            $result['HostId']
+        );
     }
 }
-
-?>

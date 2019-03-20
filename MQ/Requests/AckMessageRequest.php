@@ -38,9 +38,8 @@ class AckMessageRequest extends BaseRequest
         $xmlWriter = new \XMLWriter;
         $xmlWriter->openMemory();
         $xmlWriter->startDocument("1.0", "UTF-8");
-        $xmlWriter->startElementNS(NULL, Constants::RECEIPT_HANDLES, Constants::XML_NAMESPACE);
-        foreach ($this->receiptHandles as $receiptHandle)
-        {
+        $xmlWriter->startElementNS(null, Constants::RECEIPT_HANDLES, Constants::XML_NAMESPACE);
+        foreach ($this->receiptHandles as $receiptHandle) {
             $xmlWriter->writeElement(Constants::RECEIPT_HANDLE, $receiptHandle);
         }
         $xmlWriter->endElement();
@@ -57,4 +56,3 @@ class AckMessageRequest extends BaseRequest
         return http_build_query($params);
     }
 }
-?>

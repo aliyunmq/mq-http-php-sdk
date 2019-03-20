@@ -1,4 +1,5 @@
 <?php
+
 namespace MQ\Responses;
 
 use MQ\Common\XMLParser;
@@ -26,7 +27,7 @@ class ConsumeMessageResponse extends BaseResponse
     {
         $this->statusCode = $statusCode;
         if ($statusCode == 200) {
-            $this->succeed = TRUE;
+            $this->succeed = true;
         } else {
             $this->parseErrorResponse($statusCode, $content);
         }
@@ -34,11 +35,8 @@ class ConsumeMessageResponse extends BaseResponse
         $xmlReader = $this->loadXmlContent($content);
 
         try {
-            while ($xmlReader->read())
-            {
-                if ($xmlReader->nodeType == \XMLReader::ELEMENT
-                    && $xmlReader->name == 'Message')
-                {
+            while ($xmlReader->read()) {
+                if ($xmlReader->nodeType === \XMLReader::ELEMENT && $xmlReader->name === 'Message') {
                     $this->messages[] = Message::fromXML($xmlReader);
                 }
             }
@@ -50,26 +48,45 @@ class ConsumeMessageResponse extends BaseResponse
         }
     }
 
-    public function parseErrorResponse($statusCode, $content, MQException $exception = NULL)
+    public function parseErrorResponse($statusCode, $content, MQException $exception = null)
     {
-        $this->succeed = FALSE;
+        $this->succeed = false;
         $xmlReader = $this->loadXmlContent($content);
 
         try {
             $result = XMLParser::parseNormalError($xmlReader);
-            if ($result['Code'] == Constants::TOPIC_NOT_EXIST)
-            {
-                throw new TopicNotExistException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
+            if ($result['Code'] == Constants::TOPIC_NOT_EXIST) {
+                throw new TopicNotExistException(
+                    $statusCode,
+                    $result['Message'],
+                    $exception,
+                    $result['Code'],
+                    $result['RequestId'],
+                    $result['HostId']
+                );
             }
-            if ($result['Code'] == Constants::MESSAGE_NOT_EXIST)
-            {
-                throw new MessageNotExistException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
+            if ($result['Code'] == Constants::MESSAGE_NOT_EXIST) {
+                throw new MessageNotExistException(
+                    $statusCode,
+                    $result['Message'],
+                    $exception,
+                    $result['Code'],
+                    $result['RequestId'],
+                    $result['HostId']
+                );
             }
-            throw new MQException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
+            throw new MQException(
+                $statusCode,
+                $result['Message'],
+                $exception,
+                $result['Code'],
+                $result['RequestId'],
+                $result['HostId']
+            );
         } catch (\Exception $e) {
-            if ($exception != NULL) {
+            if ($exception != null) {
                 throw $exception;
-            } elseif($e instanceof MQException) {
+            } elseif ($e instanceof MQException) {
                 throw $e;
             } else {
                 throw new MQException($statusCode, $e->getMessage());
@@ -77,8 +94,5 @@ class ConsumeMessageResponse extends BaseResponse
         } catch (\Throwable $t) {
             throw new MQException($statusCode, $t->getMessage());
         }
-
     }
 }
-
-?>

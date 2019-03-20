@@ -35,8 +35,7 @@ class MQPromise
     {
         try {
             $res = $this->promise->wait();
-            if ($res instanceof ResponseInterface)
-            {
+            if ($res instanceof ResponseInterface) {
                 $this->response->setRequestId($res->getHeaderLine("x-mq-request-id"));
                 return $this->response->parseResponse($res->getStatusCode(), $res->getBody());
             }
@@ -50,5 +49,3 @@ class MQPromise
         $this->response->parseErrorResponse("500", "Unknown");
     }
 }
-
-?>

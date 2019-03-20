@@ -2,7 +2,6 @@
 namespace MQ\Traits;
 
 use MQ\Constants;
-use MQ\Model\MessageAttributes;
 
 trait MessagePropertiesForPublish
 {
@@ -53,15 +52,11 @@ trait MessagePropertiesForPublish
 
     public function writeMessagePropertiesForPublishXML(\XMLWriter $xmlWriter)
     {
-        if ($this->messageBody != NULL)
-        {
+        if ($this->messageBody != null) {
             $xmlWriter->writeElement(Constants::MESSAGE_BODY, $this->messageBody);
         }
-        if ($this->messageTag !== NULL)
-        {
+        if ($this->messageTag !== null) {
             $xmlWriter->writeElement(Constants::MESSAGE_TAG, $this->messageTag);
         }
     }
 }
-
-?>

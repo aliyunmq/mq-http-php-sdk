@@ -1,4 +1,5 @@
 <?php
+
 namespace MQ;
 
 use MQ\Exception\InvalidArgumentException;
@@ -13,7 +14,7 @@ class MQProducer
     private $topicName;
     private $client;
 
-    function __construct(HttpClient $client, $instanceId = NULL, $topicName)
+    public function __construct(HttpClient $client, $instanceId, $topicName)
     {
         if (empty($topicName)) {
             throw new InvalidArgumentException(400, "TopicName is null");
@@ -23,7 +24,8 @@ class MQProducer
         $this->topicName = $topicName;
     }
 
-    public function getInstanceId() {
+    public function getInstanceId()
+    {
         return $this->instanceId;
     }
 
@@ -35,10 +37,13 @@ class MQProducer
     public function publishMessage(TopicMessage $topicMessage)
     {
 
-        $request = new PublishMessageRequest($this->instanceId, $this->topicName, $topicMessage->getMessageBody(), $topicMessage->getMessageTag());
+        $request = new PublishMessageRequest(
+            $this->instanceId,
+            $this->topicName,
+            $topicMessage->getMessageBody(),
+            $topicMessage->getMessageTag()
+        );
         $response = new PublishMessageResponse();
         return $this->client->sendRequest($request, $response);
     }
 }
-
-?>

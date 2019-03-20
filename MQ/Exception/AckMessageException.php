@@ -13,7 +13,7 @@ class AckMessageException extends MQException
 {
     protected $ackMessageErrorItems;
 
-    public function __construct($code, $message, $previousException = NULL, $requestId = NULL, $hostId = NULL)
+    public function __construct($code, $message, $previousException = null, $requestId = null, $hostId = null)
     {
         parent::__construct($code, $message, $previousException, Constants::ACK_FAIL, $requestId, $hostId);
 
@@ -30,5 +30,3 @@ class AckMessageException extends MQException
         return $this->ackMessageErrorItems;
     }
 }
-
-?>
