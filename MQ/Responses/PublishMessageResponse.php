@@ -42,6 +42,7 @@ class PublishMessageResponse extends BaseResponse
         $topicMessage = new TopicMessage(NULL);
         $topicMessage->setMessageId($message->getMessageId());
         $topicMessage->setMessageBodyMD5($message->getMessageBodyMD5());
+        $topicMessage->setReceiptHandle($message->getReceiptHandle());
 
         return $topicMessage;
     }

@@ -9,9 +9,9 @@ use MQ\Responses\PublishMessageResponse;
 
 class MQProducer
 {
-    private $instanceId;
-    private $topicName;
-    private $client;
+    protected $instanceId;
+    protected $topicName;
+    protected $client;
 
     function __construct(HttpClient $client, $instanceId = NULL, $topicName)
     {
@@ -35,7 +35,10 @@ class MQProducer
     public function publishMessage(TopicMessage $topicMessage)
     {
 
-        $request = new PublishMessageRequest($this->instanceId, $this->topicName, $topicMessage->getMessageBody(), $topicMessage->getMessageTag());
+        $request = new PublishMessageRequest(
+            $this->instanceId, $this->topicName, $topicMessage->getMessageBody(),
+            $topicMessage->getProperties(), $topicMessage->getMessageTag()
+        );
         $response = new PublishMessageResponse();
         return $this->client->sendRequest($request, $response);
     }

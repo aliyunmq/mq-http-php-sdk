@@ -10,13 +10,14 @@ class PublishMessageRequest extends BaseRequest
 
     private $topicName;
 
-    public function __construct($instanceId, $topicName, $messageBody, $messageTag = NULL)
+    public function __construct($instanceId, $topicName, $messageBody, $properties = NULL, $messageTag = NULL)
     {
         parent::__construct($instanceId, 'post', 'topics/' . $topicName . '/messages');
 
         $this->topicName = $topicName;
         $this->messageBody = $messageBody;
         $this->messageTag = $messageTag;
+        $this->properties = $properties;
     }
 
     public function getTopicName()

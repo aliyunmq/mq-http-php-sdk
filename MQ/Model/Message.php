@@ -8,7 +8,8 @@ class Message
 {
     use MessagePropertiesForConsume;
 
-    public function __construct($messageId, $messageBodyMD5, $messageBody, $publishTime, $nextConsumeTime, $firstConsumeTime, $consumedTimes, $receiptHandle, $messageTag)
+    public function __construct($messageId, $messageBodyMD5, $messageBody, $publishTime, $nextConsumeTime,
+                                $firstConsumeTime, $consumedTimes, $receiptHandle, $messageTag, $properties)
     {
         $this->messageId = $messageId;
         $this->messageBodyMD5 = $messageBodyMD5;
@@ -19,6 +20,7 @@ class Message
         $this->consumedTimes = $consumedTimes;
         $this->receiptHandle = $receiptHandle;
         $this->messageTag = $messageTag;
+        $this->properties = $properties;
     }
 
     static public function fromXML(\XMLReader $xmlReader)
@@ -32,6 +34,7 @@ class Message
         $consumedTimes = NULL;
         $receiptHandle = NULL;
         $messageTag = NULL;
+        $properties = NULL;
 
         while ($xmlReader->read())
         {
@@ -102,6 +105,24 @@ class Message
                         $messageTag = $xmlReader->value;
                     }
                     break;
+                case Constants::MESSAGE_PROPERTIES:
+                    $xmlReader->read();
+                    if ($xmlReader->nodeType == \XMLReader::TEXT)
+                    {
+                        $propertiesString = $xmlReader->value;
+                        if ($propertiesString != NULL)
+                        {
+                            $kvArray = explode("|", $propertiesString);
+                            foreach ($kvArray as $kv)
+                            {
+                                $kAndV = explode(":", $kv);
+                                if (sizeof($kAndV) == 2)
+                                {
+                                    $properties[$kAndV[0]] = $kAndV[1];
+                                }
+                            }
+                        }
+                    }
                     break;
                 }
                 break;
@@ -117,7 +138,9 @@ class Message
                         $firstConsumeTime,
                         $consumedTimes,
                         $receiptHandle,
-                        $messageTag);
+                        $messageTag,
+                        $properties
+                    );
                     return $message;
                 }
                 break;
@@ -133,7 +156,9 @@ class Message
             $firstConsumeTime,
             $consumedTimes,
             $receiptHandle,
-            $messageTag);
+            $messageTag,
+            $properties
+        );
 
         return $message;
     }

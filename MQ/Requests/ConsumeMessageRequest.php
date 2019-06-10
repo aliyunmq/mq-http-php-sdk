@@ -8,6 +8,7 @@ class ConsumeMessageRequest extends BaseRequest
     private $messageTag;
     private $numOfMessages;
     private $waitSeconds;
+    private $trans;
 
     public function __construct($instanceId, $topicName, $consumer, $numOfMessages, $messageTag = NULL, $waitSeconds = NULL)
     {
@@ -66,19 +67,30 @@ class ConsumeMessageRequest extends BaseRequest
         return NULL;
     }
 
+    function setTrans($trans)
+    {
+        $this->trans = $trans;
+    }
+
     public function generateQueryString()
     {
         $params = array("numOfMessages" => $this->numOfMessages);
         $params["consumer"] = $this->consumer;
-        if ($this->instanceId != null && $this->instanceId != "") {
+        if ($this->instanceId != NULL && $this->instanceId != "")
+        {
             $params["ns"] = $this->instanceId;
         }
         if ($this->waitSeconds != NULL)
         {
             $params["waitseconds"] = $this->waitSeconds;
         }
-        if ($this->messageTag != NULL) {
+        if ($this->messageTag != NULL)
+        {
             $params["tag"] = $this->messageTag;
+        }
+        if ($this->trans != NULL)
+        {
+            $params["trans"] = $this->trans;
         }
         return http_build_query($params);
     }

@@ -8,6 +8,7 @@ class AckMessageRequest extends BaseRequest
     private $topicName;
     private $receiptHandles;
     private $consumer;
+    private $trans;
 
     public function __construct($instanceId, $topicName, $consumer, array $receiptHandles)
     {
@@ -33,6 +34,11 @@ class AckMessageRequest extends BaseRequest
         return $this->consumer;
     }
 
+    function setTrans($trans)
+    {
+        $this->trans = $trans;
+    }
+
     public function generateBody()
     {
         $xmlWriter = new \XMLWriter;
@@ -53,6 +59,10 @@ class AckMessageRequest extends BaseRequest
         $params = array("consumer" => $this->consumer);
         if ($this->instanceId != null && $this->instanceId != "") {
             $params["ns"] = $this->instanceId;
+        }
+        if ($this->trans != NULL)
+        {
+            $params["trans"] = $this->trans;
         }
         return http_build_query($params);
     }

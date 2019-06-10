@@ -41,7 +41,7 @@ class MQClient
      * @param string $instanceId: instance id
      * @param string $topicName:  the topic name
      *
-     * @return MQProducer $topic: the Producer instance
+     * @return MQProducer: the Producer instance
      */
     public function getProducer($instanceId, $topicName)
     {
@@ -52,6 +52,23 @@ class MQClient
     }
 
     /**
+     * Returns a Transaction Producer reference for publish message to topic
+     *
+     * @param string $instanceId: instance id
+     * @param string $topicName:  the topic name
+     * @param string $groupId:  the group id
+     *
+     * @return MQTransProducer: the Transaction Producer instance
+     */
+    public function getTransProducer($instanceId, $topicName, $groupId)
+    {
+        if ($topicName == NULL || $topicName == "") {
+            throw new InvalidArgumentException(400, "TopicName is null or empty");
+        }
+        return new MQTransProducer($this->client, $instanceId, $topicName, $groupId);
+    }
+
+    /**
      * Returns a Consumer reference for consume and ack message to topic
      *
      * @param string $instanceId: instance id
@@ -59,7 +76,7 @@ class MQClient
      * @param string $consumer: the consumer name / ons cid
      * @param string $messageTag: filter tag for consumer. If not empty, only consume the message which's messageTag is equal to it.
      *
-     * @return MQConsumer $topic: the Producer instance
+     * @return MQConsumer: the Consumer instance
      */
     public function getConsumer($instanceId, $topicName, $consumer, $messageTag = NULL)
     {

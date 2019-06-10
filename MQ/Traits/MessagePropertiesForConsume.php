@@ -1,26 +1,16 @@
 <?php
 namespace MQ\Traits;
 
-use MQ\Model\Message;
-use MQ\Traits\MessagePropertiesForPeek;
+use MQ\Constants;
 
 trait MessagePropertiesForConsume
 {
     use MessagePropertiesForPublish;
 
-    protected $receiptHandle;
     protected $publishTime;
     protected $nextConsumeTime;
     protected $firstConsumeTime;
     protected $consumedTimes;
-
-    /**
-     * @return mixed
-     */
-    public function getReceiptHandle()
-    {
-        return $this->receiptHandle;
-    }
 
     /**
      * @return mixed
@@ -62,17 +52,47 @@ trait MessagePropertiesForConsume
         return $this->consumedTimes;
     }
 
-
-    public function readMessagePropertiesForConsumeXML(\XMLReader $xmlReader)
+    public function getProperty($key)
     {
-        $message = Message::fromXML($xmlReader);
-        $this->messageId = $message->getMessageId();
-        $this->messageBodyMD5 = $message->getMessageBodyMD5();
-        $this->messageBody = $message->getMessageBody();
-        $this->publishTime = $message->getPublishTime();
-        $this->nextConsumeTime = $message->getNextConsumeTime();
-        $this->firstConsumeTime = $message->getFirstConsumeTime();
-        $this->consumedTimes = $message->getConsumedTimes();
+        if ($this->properties == NULL)
+        {
+            return NULL;
+        }
+        return $this->properties[$key];
+    }
+
+    /**
+     * 消息KEY
+     */
+    public function getMessageKey()
+    {
+        return $this->getProperty(Constants::MESSAGE_PROPERTIES_MSG_KEY);
+    }
+
+    /**
+     * 定时消息时间戳，单位毫秒（ms
+     */
+    public function getStartDeliverTime()
+    {
+        $temp = $this->getProperty(Constants::MESSAGE_PROPERTIES_TIMER_KEY);
+        if ($temp === NULL)
+        {
+            return 0;
+        }
+        return (int)$temp;
+    }
+
+    /**
+     * 事务消息第一次消息回查的最快时间，单位秒
+     */
+    public function getTransCheckImmunityTime()
+    {
+        $temp = $this->getProperty(Constants::MESSAGE_PROPERTIES_TRANS_CHECK_KEY);
+        if ($temp === NULL)
+        {
+            return 0;
+        }
+        return (int)$temp;
     }
 }
 
