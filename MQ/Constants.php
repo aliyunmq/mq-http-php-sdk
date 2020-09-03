@@ -5,6 +5,7 @@ class Constants
 {
     const GMT_DATE_FORMAT = "D, d M Y H:i:s \\G\\M\\T";
 
+    const CLIENT_VERSION = "mq-php-sdk/1.0.3(GuzzleHttp/";
     const VERSION_HEADER = "x-mq-version";
     const HEADER_PREFIX = "x-mq-";
     const XML_NAMESPACE = "http://mq.aliyuncs.com/doc/v1/";
@@ -47,10 +48,12 @@ class Constants
     const MESSAGE_PROPERTIES_MSG_KEY = "KEYS";
     const MESSAGE_PROPERTIES_TRANS_CHECK_KEY = "__TransCheckT";
     const MESSAGE_PROPERTIES_TIMER_KEY = "__STARTDELIVERTIME";
+    const MESSAGE_PROPERTIES_SHARDING = "__SHARDINGKEY";
 
     const TRANSACTION_ROLLBACK = "rollback";
     const TRANSACTION_COMMIT = "commit";
     const TRANSACTION_POP = "pop";
+    const TRANSACTION_ORDER = "order";
 }
 
 ?>

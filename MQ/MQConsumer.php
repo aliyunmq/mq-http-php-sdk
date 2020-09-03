@@ -85,6 +85,41 @@ class MQConsumer
     }
 
     /**
+     * consume message orderly
+     *
+     * Next messages will be consumed if all of same shard are acked. Otherwise, same messages will be consumed again after NextConsumeTime.
+     *
+     * Attention: the topic should be order topic created at console, if not, mq could not keep the order feature.
+     *
+     * This interface is suitable for globally order and partitionally order messages, and could be used in multi-thread scenes.
+     *
+     * @param $numOfMessages: consume how many messages once, 1~16
+     * @param $waitSeconds: if > 0, means the time(second) the request holden at server if there is no message to consume.
+     *                      If <= 0, means the server will response back if there is no message to consume.
+     *                      It's value should be 1~30
+     *
+     * @return Message may contains several shard's messages, the messages of one shard are ordered.
+     *
+     * @throws TopicNotExistException if queue does not exist
+     * @throws MessageNotExistException if no message exists
+     * @throws InvalidArgumentException if the argument is invalid
+     * @throws MQException if any other exception happends
+     */
+    public function consumeMessageOrderly($numOfMessages, $waitSeconds = -1)
+    {
+        if ($numOfMessages < 0 || $numOfMessages > 16) {
+            throw new InvalidArgumentException(400, "numOfMessages should be 1~16");
+        }
+        if ($waitSeconds > 30) {
+            throw new InvalidArgumentException(400, "numOfMessages should less then 30");
+        }
+        $request = new ConsumeMessageRequest($this->instanceId, $this->topicName, $this->consumer, $numOfMessages, $this->messageTag, $waitSeconds);
+        $request->setTrans(Constants::TRANSACTION_ORDER);
+        $response = new ConsumeMessageResponse();
+        return $this->client->sendRequest($request, $response);
+    }
+
+    /**
      * ack message
      *
      * @param $receiptHandles:

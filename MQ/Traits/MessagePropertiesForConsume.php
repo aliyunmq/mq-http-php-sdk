@@ -37,6 +37,8 @@ trait MessagePropertiesForConsume
     }
 
     /**
+     * 对于顺序消费没有意义
+     *
      * @return mixed
      */
     public function getFirstConsumeTime()
@@ -93,6 +95,14 @@ trait MessagePropertiesForConsume
             return 0;
         }
         return (int)$temp;
+    }
+
+    /**
+     * 顺序消息分区KEY
+     */
+    public function getShardingKey()
+    {
+        return $this->getProperty(Constants::MESSAGE_PROPERTIES_SHARDING);
     }
 }
 
