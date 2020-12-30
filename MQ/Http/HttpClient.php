@@ -47,7 +47,13 @@ class HttpClient
         $this->connectTimeout = $config->getConnectTimeout();
         $this->securityToken = $securityToken;
         $this->endpoint = $endPoint;
-        $this->agent = Constants::CLIENT_VERSION . \GuzzleHttp\Client::VERSION . " PHP/" . PHP_VERSION . ")";
+        $guzzleVersion = '';
+        if (defined('\GuzzleHttp\Client::VERSION')) {
+            $guzzleVersion = $this->client::VERSION;
+        } else {
+            $guzzleVersion = $this->client::MAJOR_VERSION;
+        }
+        $this->agent = Constants::CLIENT_VERSION . $guzzleVersion . " PHP/" . PHP_VERSION . ")";
     }
 
     private function addRequiredHeaders(BaseRequest &$request)
