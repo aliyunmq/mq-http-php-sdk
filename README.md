@@ -27,29 +27,30 @@ composer install
 
 *Note: php version>=5.5.0, and xml extension of php is required.*
 
-## Samples
+## Note
+1. Http consumer only support timer msg (less than 3 days), no matter the msg is produced from http or tcp protocol.
+2. Order is only supported at special server cluster.
 
-### V1.0.0 Samples
+## Samples (github)
+
 [Publish Message](https://github.com/aliyunmq/mq-http-samples/blob/master/php/Producer.php)
 
 [Consume Message](https://github.com/aliyunmq/mq-http-samples/blob/master/php/Consumer.php)
 
-### V1.0.1 Samples
-[Publish Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/php/Producer.php)
+[Transaction Message](https://github.com/aliyunmq/mq-http-samples/blob/master/php/TransProducer.php)
 
-[Consume Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/php/Consumer.php)
+[Publish Order Message](https://github.com/aliyunmq/mq-http-samples/blob/master/php/OrderProducer.php)
 
-[Transaction Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/php/TransProducer.php)
+[Consume Order Message](https://github.com/aliyunmq/mq-http-samples/blob/master/php/OrderConsumer.php)
 
-### V1.0.3 Samples
-[Publish Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/php/Producer.php)
+## Samples (code.aliyun.com)
 
-[Consume Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/php/Consumer.php)
+[Publish Message](https://code.aliyun.com/aliware_rocketmq/mq-http-samples/blob/master/php/Producer.php)
 
-[Transaction Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/php/TransProducer.php)
+[Consume Message](https://code.aliyun.com/aliware_rocketmq/mq-http-samples/blob/master/php/Consumer.php)
 
-[Publish Order Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/php/OrderProducer.php)
+[Transaction Message](https://code.aliyun.com/aliware_rocketmq/mq-http-samples/blob/master/php/TransProducer.php)
 
-[Consume Order Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/php/OrderConsumer.php)
+[Publish Order Message](https://code.aliyun.com/aliware_rocketmq/mq-http-samples/blob/master/php/OrderProducer.php)
 
-Note: Http consumer only support timer msg(less than 3 days), no matter the msg is produced from http or tcp protocol.
+[Consume Order Message](https://code.aliyun.com/aliware_rocketmq/mq-http-samples/blob/master/php/OrderConsumer.php)
