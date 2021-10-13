@@ -1,5 +1,5 @@
 {
-    "name": "aliyunmq/mq-http-sdk",
+    "name": "lanizz/mq-http-sdk",
     "type": "library",
     "description": "Aliyun Message Queue(MQ) Http PHP SDK, PHP>=5.5.0",
     "keywords": ["Aliyun","Alicloud", "MQ", "Message Queue", "Message", "Queue"],
