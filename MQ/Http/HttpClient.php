@@ -49,9 +49,9 @@ class HttpClient
         $this->endpoint = $endPoint;
         $guzzleVersion = '';
         if (defined('\GuzzleHttp\Client::VERSION')) {
-            $guzzleVersion = $this->client::VERSION;
+            $guzzleVersion = \GuzzleHttp\Client::VERSION;
         } else {
-            $guzzleVersion = $this->client::MAJOR_VERSION;
+            $guzzleVersion = \GuzzleHttp\Client::MAJOR_VERSION;
         }
         $this->agent = Constants::CLIENT_VERSION . $guzzleVersion . " PHP/" . PHP_VERSION . ")";
     }
