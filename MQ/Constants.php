@@ -5,7 +5,7 @@ class Constants
 {
     const GMT_DATE_FORMAT = "D, d M Y H:i:s \\G\\M\\T";
 
-    const CLIENT_VERSION = "mq-php-sdk/1.0.3(GuzzleHttp/";
+    const CLIENT_VERSION = "mq-php-sdk/1.0.4(GuzzleHttp/";
     const VERSION_HEADER = "x-mq-version";
     const HEADER_PREFIX = "x-mq-";
     const XML_NAMESPACE = "http://mq.aliyuncs.com/doc/v1/";
