@@ -4,6 +4,7 @@ namespace MQ\Responses;
 use MQ\Common\XMLParser;
 use MQ\Constants;
 use MQ\Exception\MessageNotExistException;
+use MQ\Exception\MessageResolveException;
 use MQ\Exception\MQException;
 use MQ\Exception\TopicNotExistException;
 use MQ\Model\Message;
@@ -31,18 +32,19 @@ class ConsumeMessageResponse extends BaseResponse
             $this->parseErrorResponse($statusCode, $content);
         }
 
-        $xmlReader = $this->loadXmlContent($content);
-
         try {
-            while ($xmlReader->read())
-            {
-                if ($xmlReader->nodeType == \XMLReader::ELEMENT
-                    && $xmlReader->name == 'Message')
-                {
-                    $this->messages[] = Message::fromXML($xmlReader);
+            if ($this->loadAndValidateXmlContent($content, $xmlReader)) {
+                while ($xmlReader->read()) {
+                    if ($xmlReader->nodeType == \XMLReader::ELEMENT
+                        && $xmlReader->name == 'Message') {
+                        $this->messages[] = Message::fromXML($xmlReader);
+                    }
                 }
+                return $this->messages;
             }
-            return $this->messages;
+            throw new MessageResolveException($statusCode, 'Some messages cannot be resolved', MessagePartialResolver::resolve($content));
+        } catch (MessageResolveException $e) {
+            throw $e;
         } catch (\Exception $e) {
             throw new MQException($statusCode, $e->getMessage(), $e);
         } catch (\Throwable $t) {

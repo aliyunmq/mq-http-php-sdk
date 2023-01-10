@@ -49,6 +49,16 @@ abstract class BaseResponse
         $xmlReader->XML($content);
         return $xmlReader;
     }
+
+    protected function loadAndValidateXmlContent($content, &$xmlReader)
+    {
+        $doc = new \DOMDocument();
+        if(!$doc->loadXML($content)) {
+            return false;
+        }
+        $xmlReader = $this->loadXmlContent($content);
+        return true;
+    }
 }
 
 ?>
