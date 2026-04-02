@@ -54,7 +54,10 @@ abstract class BaseResponse
     {
         $doc = new \DOMDocument();
         if(!$doc->loadXML($content)) {
-            return false;
+            $content = preg_replace('/[^\x{0009}\x{000A}\x{000D}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u', '', $content);
+            if(!$doc->loadXML($content)) {
+               return false;
+            }
         }
         $xmlReader = $this->loadXmlContent($content);
         return true;

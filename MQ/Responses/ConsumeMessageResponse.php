@@ -67,7 +67,7 @@ class ConsumeMessageResponse extends BaseResponse
             {
                 throw new MessageNotExistException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
             }
-            throw new MQException($statusCode, $result['Message'], $exception, $result['Code'], $result['RequestId'], $result['HostId']);
+            throw new MQException($statusCode, $result['Message'] ?? $content, $exception, $result['Code'], $result['RequestId'], $result['HostId']);
         } catch (\Exception $e) {
             if ($exception != NULL) {
                 throw $exception;

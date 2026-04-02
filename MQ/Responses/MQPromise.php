@@ -41,9 +41,14 @@ class MQPromise
                 return $this->response->parseResponse($res->getStatusCode(), $res->getBody());
             }
         } catch (TransferException $e) {
-            $message = $e->getMessage();
-            if ($e->hasResponse()) {
-                $message = $e->getResponse()->getBody();
+            $message = null;
+            if (method_exists($e, 'getMessage')) {
+                $message = $e->getMessage();
+            } elseif (method_exists($e, 'getResponse')) {
+                $response = $e->getResponse();
+                if (method_exists($response, 'getBody')) {
+                    $message = $response->getBody();
+                }
             }
             $this->response->parseErrorResponse($e->getCode(), $message);
         }
